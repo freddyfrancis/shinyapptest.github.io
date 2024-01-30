@@ -2,10 +2,10 @@
 
 #---------------------------------------------------------------------------------------------------
 #-- Shiny app to create a searchable/filterable resources list for the UBC BCCDC I-EDI Committee ---
-#-- Code author: Jennifer Ferris, Sept 2023 
+#-- Code author: Jennifer Ferris, Freddy Francis  
 #-- 
-#-- last edited: Sept 20, 2023
-#-- by: Jenn
+#-- last edited: Jan 30, 20234 
+#-- by: Freddy
 #---------------------------------------------------------------------------------------------------
 
 library(googledrive)
@@ -101,6 +101,18 @@ radioTooltip <- function(id, choice, title, placement = "bottom", trigger = "hov
   ")))
 }
 
+my_css <-
+  ".btn-group, .btn-group-vertical {
+    column-count: 2;
+  }
+  
+  .btn-group-toggle {
+  width:200px;
+  }
+
+  .radiobtn { 
+    width:200px;
+  }"
 
 #-- UI -----
 
@@ -117,12 +129,14 @@ ui <- fluidPage(theme = BCCDC_theme,
                           h5("If you would like to provide feedback about this page, or suggest another resource to be added, please use this form."),
                           
                           linebreaks(1),
-                          
+                          tags$head(tags$style(HTML(my_css))),
                           #-- buttons to select resource category
                           radioButtons(
                             inputId = "category",
                             label = "Resource Categories",
-                            choices = categories
+                            choices = categories,
+                            width = '100%',
+                            inline = T
                            ),
                           radioTooltip(id = "category",
                                        choice = "All Categories",
@@ -131,42 +145,42 @@ ui <- fluidPage(theme = BCCDC_theme,
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Bullying and Harassment Prevention",
-                                       title = "Training resources for workplace bullying and harrasment",
+                                       title = "Resources aimed at preventing or responding to bullying or harassment and encouraging respect in the workplace",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Student-Specific",
-                                       title = "Student specific resources",
+                                       title = "Resources that are only accessible to students, such as student grants or student counselling services, or policies specifically impacting students, such as how to request exam accommodations",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Equity Diversity and Inclusion",
-                                       title = "Equity and diversity in workplace related resources",
+                                       title = "Resources supportive of different groups of individuals, including people of different races, ethnicities, religions, abilities, genders, and sexual orientations having equitable opportunities in workplaces and in research",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Indigenous Engagement and Decolonization",
-                                       title = "Idigeneity and cultural safety" ,
+                                       title = "Resources that support learning & implementation of practices that remove or undo colonial elements and the addition or redoing of Indigenous elements into research and public health practice, moving beyond tokenistic gestures of recognition or inclusion to meaningfully change practices and structures" ,
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Research Support" ,
-                                       title = "Applicable to research process",
+                                       title = "Resources to support research such as grant databases, data collection standards and tools, or research ethics frameworks",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Mental Health",
-                                       title = "Mental health resources",
+                                       title = "Resources to support or enhance mental wellness among staff or students such as services, education tools, training resources or webinars",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
                                        choice = "Sexual Violence Prevention",
-                                       title = "Sexual violence prevention resources",
+                                       title = "Resources aimed at preventing or responding to all forms of sexual violence (including physical, emotional, psychological, and cyber violence) both in the workplace and in communities",
                                        placement = "right",
                                        trigger = "hover"),
                           radioTooltip(id = "category",
-                                       choice = "UBC Hybrid Work Program",
-                                       title = "Hybrid work",
+                                       choice = "Accessibility",
+                                       title = "Resources to support people with physical accessibility needs and ensure workplaces and learning environments are accessible to all, such as accessible restroom policies, as well as resources to support staff or students who have other accessibility needs such as exam accommodation policies and learning advisors",
                                        placement = "right",
                                        trigger = "hover"),
                           
