@@ -20,6 +20,7 @@ library(reactable)
 library(reactablefmtr)
 library(shinyfilter)
 library(shinyBS)
+library(shinylive)
 
 #### required to build shinylive (only once when setting up)
 #install.packages("pak")
