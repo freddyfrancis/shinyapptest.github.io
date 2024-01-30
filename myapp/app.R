@@ -61,8 +61,8 @@ resource_list <- read_sheet(resource_drive, sheet = 1) %>%
   arrange(Category, Resource) 
 
 categories <- c("All Categories", strsplit(resource_list$Category, ", ") %>% 
-  unlist() %>% 
-  unique())
+                  unlist() %>% 
+                  unique())
 
 # category_des <- as.data.frame(categories) %>% 
 #   dplyr::mutate(description=c("Complete list",
@@ -102,18 +102,18 @@ radioTooltip <- function(id, choice, title, placement = "bottom", trigger = "hov
   ")))
 }
 
-my_css <-
-  ".btn-group, .btn-group-vertical {
-    column-count: 2;
-  }
-  
-  .btn-group-toggle {
-  width:200px;
-  }
-
-  .radiobtn { 
-    width:200px;
-  }"
+# my_css <-
+#   ".btn-group, .btn-group-vertical {
+#     column-count: 2;
+#   }
+#   
+#   .btn-group-toggle {
+#   width:200px;
+#   }
+# 
+#   .radiobtn { 
+#     width:200px;
+#   }"
 
 #-- UI -----
 
@@ -130,7 +130,7 @@ ui <- fluidPage(theme = BCCDC_theme,
                           h5("If you would like to provide feedback about this page, or suggest another resource to be added, please use this form."),
                           
                           linebreaks(1),
-                          tags$head(tags$style(HTML(my_css))),
+                          # tags$head(tags$style(HTML(my_css))),
                           #-- buttons to select resource category
                           radioButtons(
                             inputId = "category",
@@ -138,7 +138,7 @@ ui <- fluidPage(theme = BCCDC_theme,
                             choices = categories,
                             width = '100%',
                             inline = T
-                           ),
+                          ),
                           radioTooltip(id = "category",
                                        choice = "All Categories",
                                        title = "Complete list",
@@ -192,15 +192,15 @@ ui <- fluidPage(theme = BCCDC_theme,
                             choices = c("Faculty", "Staff", "Students"),
                             selected = "",
                             inline = TRUE),
-
+                          
                           #- table output
                           fluidRow(style = 'margin-left: 5%; margin-right: 5%;',
                                    column(width = 12, align = "center",
                                           reactableOutput("mytable")
-                                          )
                                    )
-            ) #- mainpanel
-  ) #- fluidpage
+                          )
+                ) #- mainpanel
+) #- fluidpage
 
 
 #-- Server ------
@@ -221,11 +221,11 @@ server <- function(input, output, session) {
     if(length(input$audience) == 1){
       resource_list <- resource_list %>%
         filter(str_detect(`Target Audience`, regex(input$audience, ignore_case = T)))
-      } 
+    } 
     if(length(input$audience) == 2){
-        resource_list <- resource_list %>%
-          filter(str_detect(`Target Audience`, regex(input$audience[1], ignore_case = T))) %>%
-          filter(str_detect(`Target Audience`, regex(input$audience[2], ignore_case = T)))
+      resource_list <- resource_list %>%
+        filter(str_detect(`Target Audience`, regex(input$audience[1], ignore_case = T))) %>%
+        filter(str_detect(`Target Audience`, regex(input$audience[2], ignore_case = T)))
     }
     if(length(input$audience) == 3){
       resource_list <- resource_list %>%
@@ -236,7 +236,7 @@ server <- function(input, output, session) {
     
     resource_list 
   })
-
+  
   #- resource data table
   output$mytable <- renderReactable({
     reactable(filtered_list()[,c(1, 3:4, 6:8)], 
@@ -260,7 +260,7 @@ server <- function(input, output, session) {
                       "aria-label" = sprintf("Filter %s", name),
                       style = "width: 100%; height: 28px;"
                     )}
-                  ), 
+                ), 
                 
                 'Resource Creator' = colDef(
                   align = "center", minWidth = 75), 
@@ -277,7 +277,7 @@ server <- function(input, output, session) {
                       "aria-label" = sprintf("Filter %s", name),
                       style = "width: 100%; height: 28px;"
                     )}
-                  ), 
+                ), 
                 
                 'Description' = colDef(
                   minWidth = 200), 
@@ -285,13 +285,13 @@ server <- function(input, output, session) {
                                   cell = function(Resource) {
                                     url <- resource_list[resource_list$Resource == Resource, "URL"]
                                     htmltools::tags$a(href = as.character(url), target = "_blank", as.character(Resource))
-                                    })
-                ),
+                                  })
+              ),
               
               defaultPageSize = 15,
               elementId = c("type-select")) 
   }) #- reactable 
-  } #-server
+} #-server
 
 
 #-- Run -----
